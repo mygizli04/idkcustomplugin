@@ -1,0 +1,7 @@
+.gradle/
+build/
+.vscode/
+bin/
+gradle/
+MCServer/
+.DS_Store

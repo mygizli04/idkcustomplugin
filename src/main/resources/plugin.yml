@@ -1,0 +1,19 @@
+main: ${PACKAGE}.${NAME}
+name: ${NAME}
+version: "${VERSION}"
+api-version: "1.16"
+author: AUTHOR
+description: DESCRIPTION
+commands:
+  debug:
+    description: bruh moment
+    permission: custom.debug
+permissions:
+  example.test:
+    description: DESCRIPTION
+    default: true
+  example.*:
+    description: Grants all other permissions
+    default: false
+    children:
+      example.test: true
