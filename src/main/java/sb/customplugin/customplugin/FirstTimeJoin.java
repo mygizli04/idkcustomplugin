@@ -7,18 +7,12 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.Material;
 
+/**
+ * Handles events relating to players that join the server for their first time.
+ */
 public class FirstTimeJoin implements Listener {
-
-    private CustomPlugin plugin;
-
-    public FirstTimeJoin(CustomPlugin plugin) {
-        this.plugin = plugin;
-    }
-
     @EventHandler
     public void onJoin(PlayerJoinEvent event) {
-        plugin.getLogger().info("Player joined");
-
         Player player = event.getPlayer();
 
         // Check if you joined for the first time.

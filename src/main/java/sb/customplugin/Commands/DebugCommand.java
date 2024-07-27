@@ -7,9 +7,19 @@ import org.bukkit.entity.Player;
 
 import sb.customplugin.customplugin.CustomPlugin;
 import sb.customplugin.customplugin.LevelUpSystem;
+import sb.customplugin.data.PlayerMemory;
 import sb.customplugin.utility.PermissionUtility;
 import sb.customplugin.utility.PlayerUtility;
 
+/**
+ * <b>Command: </b> /debug &lt;memory> &lt;xp|maxxp|level|balance|vaults>
+ * &lt;get|set> &lt;number>
+ * <br>
+ * <br>
+ * <b>Description: </b> Intended for admin use only to set certain values in
+ * player memory. Sets the chosen variable of the player executing the command
+ * to the specified value. Value must be an integer.
+ */
 public class DebugCommand implements CommandExecutor {
 
     CustomPlugin plugin;
@@ -24,12 +34,20 @@ public class DebugCommand implements CommandExecutor {
             return false;
         }
 
-        if (!PermissionUtility.checkPermission(sender, "custom.debug")) return false;
+        if (!PermissionUtility.checkPermission(sender, "custom.debug"))
+            return false;
 
-        if (!command.getName().toLowerCase().equals("debug")) return false;
+        if (!command.getName().toLowerCase().equals("debug"))
+            return false;
 
         Player player = (Player) sender;
-        var memory = PlayerUtility.getPlayerMemory(player);
+        PlayerMemory memory;
+
+        try {
+            memory = PlayerUtility.getPlayerMemory(player);
+        } catch (PlayerUtility.NoPlayerMemoryError err) {
+            return false; // Player's been kicked at this point.
+        }
 
         switch (args[0]) {
             case "memory":
@@ -59,15 +77,33 @@ public class DebugCommand implements CommandExecutor {
 
                         switch (args[1]) {
                             case "xp":
-                                LevelUpSystem.setPlayerCurrentExp(player, value);
+
+                                try {
+                                    LevelUpSystem.setPlayerCurrentExp(player, value);
+                                } catch (PlayerUtility.NoPlayerMemoryError err) {
+                                    return false; // The player's been kicked at this point.
+                                }
+
                                 player.sendMessage("Your new current xp is: " + memory.currentExp);
                                 return true;
                             case "maxxp":
-                                LevelUpSystem.setPlayerMaxExp(player, value);
+
+                                try {
+                                    LevelUpSystem.setPlayerMaxExp(player, value);
+                                } catch (PlayerUtility.NoPlayerMemoryError err) {
+                                    return false; // The player's been kicked at this point.
+                                }
+
                                 player.sendMessage("Your new max xp is: " + memory.maxExp);
                                 return true;
                             case "level":
-                                LevelUpSystem.setPlayerLevel(player, value);
+
+                                try {
+                                    LevelUpSystem.setPlayerLevel(player, value);
+                                } catch (PlayerUtility.NoPlayerMemoryError err) {
+                                    return false; // The player's been kicked at this point.
+                                }
+
                                 player.sendMessage("Your new level is: " + memory.level + ". Your xp has been reset.");
                                 return true;
                             case "balance":
@@ -75,9 +111,11 @@ public class DebugCommand implements CommandExecutor {
                                 player.sendMessage("Your new balance is: " + memory.balance);
                                 return true;
                             case "vaults":
-                                PermissionUtility.removePermission(player, "playervaults.amount." + memory.unlockedPlayerVaults);
+                                PermissionUtility.removePermission(player,
+                                        "playervaults.amount." + memory.unlockedPlayerVaults);
                                 memory.unlockedPlayerVaults = value;
-                                PermissionUtility.addPermission(player, "playervaults.amount." + memory.unlockedPlayerVaults);
+                                PermissionUtility.addPermission(player,
+                                        "playervaults.amount." + memory.unlockedPlayerVaults);
                                 player.sendMessage("Your new vault count is: " + memory.unlockedPlayerVaults);
                                 return true;
 

@@ -12,7 +12,9 @@ import net.md_5.bungee.api.ChatColor;
 import sb.customplugin.data.PlayerMemory;
 import sb.customplugin.utility.PlayerUtility;
 
-
+/**
+ * Handles the creating and updating of the scoreboard sidebar.
+ */
 public class Board implements Runnable {
 
 
@@ -31,9 +33,21 @@ public class Board implements Runnable {
     
 
 
+    /**
+     * Creates and displays a new scoreboard for the player if one does not already exist.
+     * 
+     * @param player The player the scoreboard will be created for.
+     */
     private void createNewScoreboard(Player player){
 
-        PlayerMemory memory = PlayerUtility.getPlayerMemory(player);
+        PlayerMemory memory;
+
+        try {
+            memory = PlayerUtility.getPlayerMemory(player);
+        }
+        catch (PlayerUtility.NoPlayerMemoryError err) {
+            return; // Player's been kicked at this point.
+        }
 
 
         Scoreboard scoreboard = Bukkit.getScoreboardManager().getNewScoreboard();
@@ -81,8 +95,21 @@ public class Board implements Runnable {
         
     }
 
+    /**
+     * Updates the scoreboard of the player with the appropriate memory values.
+     * 
+     * @param player The player the scoreboard will be updated for.
+     */
     private void updateScoreboard(Player player){
-        PlayerMemory memory = PlayerUtility.getPlayerMemory(player);
+        PlayerMemory memory;
+
+        try {
+            memory = PlayerUtility.getPlayerMemory(player);
+        }
+        catch (PlayerUtility.NoPlayerMemoryError err) {
+            return; // Player's been kicked at this point.
+        }
+
         Scoreboard scoreboard = player.getScoreboard();
         Team team1 = scoreboard.getTeam("team1");
         Team team2 = scoreboard.getTeam("team2");
@@ -113,9 +140,4 @@ public class Board implements Runnable {
         
 
     }
-
-    public Board getInstance(){
-        return this;
-    }
-   
 }

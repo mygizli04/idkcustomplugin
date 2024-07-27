@@ -3,6 +3,7 @@ package sb.customplugin.customplugin;
 import java.io.File;
 import java.io.IOException;
 
+import org.bukkit.Bukkit;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -14,6 +15,9 @@ import sb.customplugin.utility.PlayerUtility;
 
 import org.bukkit.configuration.file.YamlConfiguration;
 
+/**
+ * Handles the loading and saving of player's data.
+ */
 public class PlayerMemoryJoinQuit implements Listener{
     
     @EventHandler
@@ -71,8 +75,17 @@ public class PlayerMemoryJoinQuit implements Listener{
 
 
     @EventHandler
-    private void onQuit(PlayerQuitEvent event){
-        PlayerMemory memory = PlayerUtility.getPlayerMemory(event.getPlayer());
+    private void onQuit(PlayerQuitEvent event) throws PlayerUtility.NoPlayerMemoryError {
+        PlayerMemory memory;
+
+        try {
+            memory = PlayerUtility.getPlayerMemory(event.getPlayer());
+        }
+        catch (PlayerUtility.NoPlayerMemoryError err) {
+            Bukkit.getLogger().info("This error occured while trying to process the player quiting (saving). This means there was no data to be saved in the first place. Either it got deleted somehow (bad) or the player just didn't happen to do anything that saved to PlayerMemory (good). I sure do hope it is the latter.");
+            throw err;
+        }
+
         File f = new File(PlayerUtility.getFolderPath(event.getPlayer()) + "/general.yml");
         FileConfiguration cfg = YamlConfiguration.loadConfiguration(f);
         cfg.set("stats.unlockedPlayerVaults", memory.unlockedPlayerVaults);

@@ -12,8 +12,17 @@ import sb.customplugin.utility.ItemUtility;
 import sb.customplugin.utility.PermissionUtility;
 import sb.customplugin.utility.PlayerUtility;
 
+/**
+ * GUI for managing playervaults.
+ */
 public class EquipmentPage extends ChestGui {
 
+    /**
+     * Get the cost of purchasing a specific vault.
+     * 
+     * @param vaultNumber The vault number to calculate the cost of.
+     * @return The cost of the vault.
+     */
     private int getCostOfVault(int vaultNumber) {
         return (int) Math.ceil(1000 * (Math.pow(1.5, vaultNumber - 1)));
     }
@@ -25,7 +34,7 @@ public class EquipmentPage extends ChestGui {
     // }
 
     @Override
-    public Inventory create(Player player) {
+    public Inventory create(Player player) throws PlayerUtility.NoPlayerMemoryError {
         Inventory inventory = Bukkit.createInventory(null, 54, "Equipment");
 
         int unlockedPlayerVaults = PlayerUtility.getPlayerMemory(player).unlockedPlayerVaults;
@@ -46,7 +55,7 @@ public class EquipmentPage extends ChestGui {
     }
 
     @Override
-    public void click(InventoryClickEvent event) {
+    public void click(InventoryClickEvent event) throws PlayerUtility.NoPlayerMemoryError {
         int slot = event.getRawSlot();
         int vault = slot - 8;
 

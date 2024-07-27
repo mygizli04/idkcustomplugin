@@ -12,6 +12,9 @@ import org.bukkit.event.inventory.InventoryClickEvent;
 
 import org.bukkit.entity.Player;
 
+/**
+ * Main page of the recovery compass GUI.
+ */
 public class MainPage extends ChestGui {
 
     CompassListener compassListener;

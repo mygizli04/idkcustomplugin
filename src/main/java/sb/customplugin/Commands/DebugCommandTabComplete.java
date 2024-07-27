@@ -9,6 +9,9 @@ import org.bukkit.command.TabCompleter;
 
 import sb.customplugin.utility.PermissionUtility;
 
+/**
+ * Tab complete for {@link DebugCommand}
+ */
 public class DebugCommandTabComplete implements TabCompleter {
 
     public List<String> onTabComplete(CommandSender sender, Command command, String alias, String[] args) { 

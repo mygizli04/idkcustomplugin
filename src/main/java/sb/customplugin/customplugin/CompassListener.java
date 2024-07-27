@@ -12,6 +12,7 @@ import sb.customplugin.ChestGui.ChestGui;
 import sb.customplugin.ChestGui.EquipmentPage;
 import sb.customplugin.ChestGui.MainPage;
 import sb.customplugin.ChestGui.StatsPage;
+import sb.customplugin.utility.PlayerUtility;
 
 import org.bukkit.Bukkit;
 import org.bukkit.event.inventory.InventoryClickEvent;
@@ -22,6 +23,9 @@ import java.util.Map;
 
 import java.lang.Runnable;
 
+/**
+ * Event listener that handles events relating to the main GUI that is accessed via a recovery compass.
+ */
 public class CompassListener implements Listener {
 
     private final CustomPlugin plugin;
@@ -45,6 +49,9 @@ public class CompassListener implements Listener {
         }
     }
 
+    /**
+     * Types of GUI that are accessible from the compass GUI.
+     */
     public static enum ChestGuiType {
         MAIN,
         STATS,
@@ -66,6 +73,12 @@ public class CompassListener implements Listener {
         }
     }
 
+    /**
+     * Open a specific chest gui (from the compass) for a specific player.
+     * 
+     * @param gui The GUI that will be shown to the player.
+     * @param player The player to show the GUI to.
+     */
     public void openChestGui(ChestGuiType gui, Player player) {
 
         var chestGui = chestGuiMap.get(gui);
@@ -75,7 +88,14 @@ public class CompassListener implements Listener {
             return;
         }
 
-        Inventory inventory = chestGui.create(player);
+        Inventory inventory;
+
+        try {
+            inventory = chestGui.create(player);
+        }
+        catch (PlayerUtility.NoPlayerMemoryError err) {
+            return; // Player's been kicked at this point.
+        }
 
         player.openInventory(inventory);
 
@@ -99,7 +119,13 @@ public class CompassListener implements Listener {
         if (chestGuiOpen != null) {
 
             var chestGui = chestGuiMap.get(chestGuiOpen);
-            chestGui.click(event);
+
+            try {
+                chestGui.click(event);
+            }
+            catch (PlayerUtility.NoPlayerMemoryError err) {
+                return; // Player's been kicked at this point.
+            }
 
             event.setCancelled(true);
         }

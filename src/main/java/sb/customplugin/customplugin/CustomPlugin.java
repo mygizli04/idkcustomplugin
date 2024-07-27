@@ -6,19 +6,15 @@ import sb.customplugin.Commands.DebugCommand;
 import sb.customplugin.Commands.DebugCommandTabComplete;
 
 /**
- * Created by Levi Muniz on 7/29/20.
- *
- * @author Copyright (c) Levi Muniz. All Rights Reserved.
+ * The class that represents this plugin.
  */
 public class CustomPlugin extends JavaPlugin {
-
-  public LevelUpSystem levelUpSystem;
 
   @Override
   public void onEnable() {
     saveDefaultConfig();
 
-    FirstTimeJoin firstTimeJoin = new FirstTimeJoin(this);
+    FirstTimeJoin firstTimeJoin = new FirstTimeJoin();
     CompassListener compassListener = new CompassListener(this);
     PlayerMemoryJoinQuit playerMemoryJoinQuitListener = new PlayerMemoryJoinQuit();
 
@@ -32,8 +28,6 @@ public class CustomPlugin extends JavaPlugin {
 
     getCommand("debug").setExecutor(new DebugCommand(this));
     getCommand("debug").setTabCompleter(new DebugCommandTabComplete());
-
-    levelUpSystem = new LevelUpSystem();
   }
 
 }

@@ -13,6 +13,9 @@ import org.bukkit.event.inventory.InventoryClickEvent;
 
 import org.bukkit.entity.Player;
 
+/**
+ * The GUI for viewing the player's stats.
+ */
 public class StatsPage extends ChestGui {
 
     CompassListener compassListener;
@@ -22,7 +25,7 @@ public class StatsPage extends ChestGui {
     }
 
     @Override
-    public Inventory create(Player player) {
+    public Inventory create(Player player) throws PlayerUtility.NoPlayerMemoryError {
         Inventory inventory = Bukkit.createInventory(null, 54, "Stats");
 
         var memory = PlayerUtility.getPlayerMemory(player);
