@@ -9,7 +9,7 @@ import org.bukkit.Material;
 public class ItemUtility {
 
     /**
-     * Creates an item with a specific name. Adding lore is currently not implemented.
+     * Creates an item with a specific name. Adding lore is currently not implemented. Formatting is reset by default.
      * 
      * @param type The type of item to create.
      * @param name The name to give the item.
@@ -20,7 +20,7 @@ public class ItemUtility {
         ItemStack itemStack = new ItemStack(type, 1);
         var meta = itemStack.getItemMeta();
 
-        meta.setDisplayName(name);
+        meta.setDisplayName("§r" + name);
 
         itemStack.setItemMeta(meta);
 
