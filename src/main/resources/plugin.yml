@@ -1,19 +1,10 @@
-main: ${PACKAGE}.${NAME}
-name: ${NAME}
+main: sb.customplugin.customplugin.CustomPlugin
+name: CustomPlugin
 version: "${VERSION}"
 api-version: "1.16"
-author: AUTHOR
-description: DESCRIPTION
+author: sbeve and ThiccDecon
+description: Custom plugin for this server.
 commands:
   debug:
     description: bruh moment
     permission: custom.debug
-permissions:
-  example.test:
-    description: DESCRIPTION
-    default: true
-  example.*:
-    description: Grants all other permissions
-    default: false
-    children:
-      example.test: true
