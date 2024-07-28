@@ -10,4 +10,5 @@ end
 rm ./MCServer/plugins/ExamplePlugin-*.jar
 cp ./build/libs/*.jar ./MCServer/plugins/
 
-rcon "kick @a Reloading" "reload confirm"
+#rcon "kick @a Reloading"
+rcon "reload confirm"
