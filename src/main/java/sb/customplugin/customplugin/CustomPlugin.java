@@ -1,9 +1,12 @@
 package sb.customplugin.customplugin;
 
+import org.bukkit.Bukkit;
+import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import sb.customplugin.Commands.DebugCommand;
 import sb.customplugin.Commands.DebugCommandTabComplete;
+import sb.customplugin.utility.PlayerUtility;
 
 /**
  * The class that represents this plugin.
@@ -13,6 +16,10 @@ public class CustomPlugin extends JavaPlugin {
   @Override
   public void onEnable() {
     saveDefaultConfig();
+
+    for (Player player : Bukkit.getOnlinePlayers()) {
+      PlayerUtility.loadPlayerMemory(player);
+    }
 
     FirstTimeJoin firstTimeJoin = new FirstTimeJoin();
     CompassListener compassListener = new CompassListener(this);

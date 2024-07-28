@@ -3,7 +3,11 @@ package sb.customplugin.utility;
 import java.util.HashMap;
 import java.util.Map;
 
+import java.io.File;
+
 import org.bukkit.Bukkit;
+import org.bukkit.configuration.file.FileConfiguration;
+import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
 
 import sb.customplugin.customplugin.CustomPlugin;
@@ -76,6 +80,58 @@ public class PlayerUtility {
         CustomPlugin plugin = (CustomPlugin) Bukkit.getServer().getPluginManager().getPlugin("CustomPlugin");
 
         return plugin.getDataFolder().getAbsolutePath() + "/ServerData/player/" + player.getUniqueId();
+    }
+
+    public static void loadPlayerMemory(Player player) {
+        PlayerMemory memory = new PlayerMemory();
+        File f = new File(PlayerUtility.getFolderPath(player) + "/general.yml");
+
+        if (f.exists()){
+            FileConfiguration cfg = YamlConfiguration.loadConfiguration(f);
+            memory.unlockedPlayerVaults = cfg.getInt("stats.unlockedPlayerVaults");
+            memory.maxHealth = cfg.getDouble("stats.maxHealth");
+            memory.health = cfg.getDouble("stats.health");
+            memory.maxMana = cfg.getDouble("stats.maxMana");
+            memory.mana = cfg.getDouble("stats.mana");
+
+            memory.balance = cfg.getInt("stats.balance");
+
+
+            memory.level = cfg.getInt("stats.level");
+            memory.maxExp = cfg.getInt("stats.maxExp");
+            memory.currentExp = cfg.getInt("stats.currentExp");
+
+            memory.effectHitRate = cfg.getDouble("stats.effectHitRate");
+            memory.critChance = cfg.getDouble("stats.critChance");
+            memory.critDMG = cfg.getInt("stats.critDMG");
+            
+            memory.dropChance = cfg.getInt("stats.dropChance");
+
+        }else{
+            memory.maxHealth = 20;
+            memory.health = 20;
+            memory.maxMana = 20;
+            memory.mana = 20;
+
+
+            memory.balance = 100;
+
+            memory.level = 1;
+            memory.maxExp = 20;
+            memory.currentExp = 0;
+
+            memory.attack = 10;
+            memory.defence = 5;
+
+            memory.effectHitRate = 10;
+            memory.critChance = 5;
+            memory.critDMG = 50;
+
+            memory.dropChance = 5;
+
+        }
+
+        setPlayerMemory(player, memory);
     }
 
     /**
