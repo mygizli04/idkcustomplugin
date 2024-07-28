@@ -84,7 +84,7 @@ public class PlayerUtility {
 
     public static void loadPlayerMemory(Player player) {
         PlayerMemory memory = new PlayerMemory();
-        File f = new File(PlayerUtility.getFolderPath(player) + "/general.yml");
+        File f = new File(getFolderPath(player) + "/general.yml");
 
         if (f.exists()){
             FileConfiguration cfg = YamlConfiguration.loadConfiguration(f);
