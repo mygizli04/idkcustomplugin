@@ -111,11 +111,9 @@ public class DebugCommand implements CommandExecutor {
                                 player.sendMessage("Your new balance is: " + memory.balance);
                                 return true;
                             case "vaults":
-                                PermissionUtility.removePermission(player,
-                                        "playervaults.amount." + memory.unlockedPlayerVaults);
+                                PermissionUtility.removePermission(player, "playervaults.amount." + memory.unlockedPlayerVaults);
                                 memory.unlockedPlayerVaults = value;
-                                PermissionUtility.addPermission(player,
-                                        "playervaults.amount." + memory.unlockedPlayerVaults);
+                                PermissionUtility.addPermission(player, "playervaults.amount." + memory.unlockedPlayerVaults);
                                 player.sendMessage("Your new vault count is: " + memory.unlockedPlayerVaults);
                                 return true;
 
